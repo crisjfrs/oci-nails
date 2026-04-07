@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oci Nails | Nail Studio Booking</title>
+  <meta name="description" content="Book nail appointments quickly with Oci Nails. Browse services, check the calendar, and confirm on WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain"></div>
+
+  <header class="site-header" id="top">
+    <a class="logo" href="#top" aria-label="Oci Nails home">
+      <img src="img/logo-oci-nails-transparant.png" alt="Oci Nails logo">
+    </a>
+    <nav class="site-nav">
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#booking">Book</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Nail studio booking, made simple</p>
+        <h1>Elegant nails. Zero chat chaos.</h1>
+        <p>
+          Pick a service, review live availability from Google Calendar,
+          then send a pre-filled WhatsApp booking request in seconds.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#booking">Start Booking</a>
+          <a class="btn btn-ghost" id="open-calendar-link" href="#schedule">View Availability</a>
+        </div>
+      </div>
+      <div class="hero-card reveal reveal-delay">
+        <h2>How it works</h2>
+        <ol>
+          <li>Choose your service and preferred time.</li>
+          <li>Check open slots in the calendar panel.</li>
+          <li>Send booking details directly on WhatsApp.</li>
+        </ol>
+        <p class="hero-note">Fast setup. No custom backend required.</p>
+      </div>
+    </section>
+
+    <section class="section services" id="services">
+      <div class="section-head reveal">
+        <p class="eyebrow">Service catalog</p>
+        <h2>Available treatments</h2>
+      </div>
+      <div class="service-grid" id="service-grid"></div>
+    </section>
+
+    <section class="section gallery" id="gallery">
+      <div class="section-head reveal">
+        <p class="eyebrow">Gallery</p>
+        <h2>Hasil nail art dan press on nails</h2>
+      </div>
+
+      <div class="gallery-group reveal">
+        <h3>Nail Art</h3>
+        <div class="gallery-grid">
+          <figure class="gallery-item">
+            <img src="img/gallery/nail-art-01.svg" alt="Nail art design 1">
+          </figure>
+          <figure class="gallery-item">
+            <img src="img/gallery/nail-art-02.svg" alt="Nail art design 2">
+          </figure>
+          <figure class="gallery-item">
+            <img src="img/gallery/nail-art-03.svg" alt="Nail art design 3">
+          </figure>
+        </div>
+      </div>
+
+      <div class="gallery-group reveal reveal-delay">
+        <h3>Press On Nails</h3>
+        <div class="gallery-grid">
+          <figure class="gallery-item">
+            <img src="img/gallery/press-on-01.svg" alt="Press on nails set 1">
+          </figure>
+          <figure class="gallery-item">
+            <img src="img/gallery/press-on-02.svg" alt="Press on nails set 2">
+          </figure>
+          <figure class="gallery-item">
+            <img src="img/gallery/press-on-03.svg" alt="Press on nails set 3">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section schedule" id="schedule">
+      <div class="section-head reveal">
+        <p class="eyebrow">Calendar visibility</p>
+        <h2>Live studio schedule</h2>
+        <p>Publish your Google Calendar as public and paste the embed URL in script.js.</p>
+      </div>
+      <div class="schedule-layout">
+        <article class="schedule-card reveal">
+          <h3>Embedded Calendar</h3>
+          <iframe id="calendar-embed" title="Google calendar availability" loading="lazy"></iframe>
+          <a class="btn btn-ghost" id="calendar-direct-link" target="_blank" rel="noopener">Open calendar in new tab</a>
+        </article>
+        <article class="schedule-help reveal reveal-delay">
+          <h3>Owner controls availability directly in Google Calendar</h3>
+          <ul>
+            <li>Block off unavailable times in your calendar.</li>
+            <li>Keep service duration in mind before confirming.</li>
+            <li>Use appointment schedule links for self-booking, if desired.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section booking" id="booking">
+      <div class="section-head reveal">
+        <p class="eyebrow">WhatsApp booking</p>
+        <h2>Send your request</h2>
+      </div>
+      <form id="booking-form" class="booking-form reveal">
+        <label>
+          Full name
+          <input type="text" name="name" required placeholder="Your name">
+        </label>
+
+        <label>
+          Phone (optional)
+          <input type="tel" name="customerPhone" placeholder="e.g. +1 555 123 4567">
+        </label>
+
+        <label>
+          Service
+          <select name="service" id="service-select" required></select>
+        </label>
+
+        <div class="split">
+          <label>
+            Preferred date
+            <input type="date" name="date" required>
+          </label>
+          <label>
+            Preferred time
+            <input type="time" name="time" required>
+          </label>
+        </div>
+
+        <label>
+          Notes
+          <textarea name="notes" rows="4" placeholder="Any design ideas or preferences?"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Send via WhatsApp</button>
+        <p class="form-note" id="form-note"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Oci.Nails MVP - Static site + Google Calendar + WhatsApp automation flow.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
