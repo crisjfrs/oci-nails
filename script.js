@@ -11,33 +11,44 @@ const CONFIG = {
 const SERVICES = [
   {
     id: "menicure-gel",
-    name: "Menicure + Gel color",
+    name: "Manicure + Gel Color",
     price: 35,
-    duration: "60 min",
-    description: "Basic nail care with gel color finish.",
+    duration: "60 menit",
+    description: "Perawatan dasar kuku dengan hasil akhir gel color.",
   },
   {
     id: "pedicure-gel",
-    name: "Pedicure + Gel color",
+    name: "Pedicure + Gel Color",
     price: 40,
-    duration: "75 min",
-    description: "Foot treatment and gel color application.",
+    duration: "75 menit",
+    description: "Perawatan kaki sekaligus aplikasi gel color.",
   },
   {
     id: "press-on-custom",
-    name: "Press on nails custom",
+    name: "Press On Nails Custom",
     price: 60,
-    duration: "90 min",
-    description: "Custom design press on nails based on your request.",
+    duration: "90 menit",
+    description: "Pembuatan press on nails custom sesuai request.",
   },
   {
     id: "remove-gel-extension",
     name: "Remove Gel/Extension",
     price: 20,
-    duration: "30 min",
-    description: "Safe removal service for gel or nail extension.",
+    duration: "30 menit",
+    description: "Layanan pelepasan gel atau extension dengan aman.",
   },
 ];
+
+function normalizeWhatsAppNumber(rawNumber) {
+  const digitsOnly = String(rawNumber || "").replace(/\D/g, "");
+
+  if (!digitsOnly) return "";
+  if (digitsOnly.startsWith("62")) return digitsOnly;
+  if (digitsOnly.startsWith("0")) return `62${digitsOnly.slice(1)}`;
+  if (digitsOnly.startsWith("8")) return `62${digitsOnly}`;
+
+  return digitsOnly;
+}
 
 function renderServices() {
   const grid = document.getElementById("service-grid");
@@ -60,7 +71,7 @@ function renderServices() {
   ).join("");
 
   select.innerHTML =
-    '<option value="" selected disabled>Select a service</option>' +
+    '<option value="" selected disabled>Pilih layanan</option>' +
     SERVICES.map(
       (service) =>
         `<option value="${service.name} ($${service.price})">${service.name} - $${service.price} (${service.duration})</option>`
@@ -80,34 +91,35 @@ function setupCalendar() {
 function setupBookingForm() {
   const form = document.getElementById("booking-form");
   const note = document.getElementById("form-note");
+  const targetNumber = normalizeWhatsAppNumber(CONFIG.whatsappNumber);
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const data = new FormData(form);
     const name = data.get("name");
-    const customerPhone = data.get("customerPhone") || "Not provided";
+    const customerPhone = data.get("customerPhone") || "Tidak diisi";
     const service = data.get("service");
     const date = data.get("date");
     const time = data.get("time");
-    const notes = data.get("notes") || "None";
+    const notes = data.get("notes") || "Tidak ada";
 
     const message = [
-      `Hello ${CONFIG.studioName}, I want to book an appointment.`,
+      `Halo ${CONFIG.studioName}, saya ingin booking appointment.`,
       "",
-      `Name: ${name}`,
-      `Phone: ${customerPhone}`,
-      `Service: ${service}`,
-      `Preferred date: ${date}`,
-      `Preferred time: ${time}`,
-      `Notes: ${notes}`,
+      `Nama: ${name}`,
+      `No HP: ${customerPhone}`,
+      `Layanan: ${service}`,
+      `Tanggal yang diinginkan: ${date}`,
+      `Jam yang diinginkan: ${time}`,
+      `Catatan: ${notes}`,
       "",
-      "Please confirm availability. Thank you!",
+      "Mohon konfirmasi ketersediaannya. Terima kasih!",
     ].join("\n");
 
-    const link = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const link = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
 
-    note.textContent = "Opening WhatsApp with your booking request...";
+    note.textContent = "Membuka WhatsApp dengan detail booking kamu...";
     window.open(link, "_blank", "noopener");
   });
 }
