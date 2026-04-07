@@ -1,6 +1,6 @@
 const CONFIG = {
   studioName: "Oci.Nails",
-  whatsappNumber: "15551234567",
+  whatsappNumber: "081222773865",
   calendarEmbedUrl:
     "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FJakarta&showPrint=0&hl=id&src=YnVjaW4wMTEwMjNAZ21haWwuY29t&color=%23039be5&mode=WEEK",
   calendarDirectUrl:
