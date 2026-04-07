@@ -5,6 +5,8 @@
   --ink-muted: #5c5552;
   --accent: #bf7f58;
   --accent-2: #2f5345;
+  --accent-2-soft: #dce9e3;
+  --accent-2-mid: #45715f;
   --card: #fffaf7;
   --border: rgba(23, 21, 21, 0.12);
   --shadow: 0 10px 30px rgba(37, 24, 16, 0.08);
@@ -24,6 +26,7 @@ body {
   font-family: "Manrope", sans-serif;
   color: var(--ink);
   background: radial-gradient(1200px 700px at 88% -4%, #f7d7c7 0%, transparent 55%),
+    radial-gradient(760px 460px at 90% 88%, #d9e8df 0%, transparent 58%),
     radial-gradient(900px 550px at 0% 100%, #ecdccf 0%, transparent 56%),
     var(--bg);
   min-height: 100vh;
@@ -75,10 +78,12 @@ body {
   font-weight: 600;
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .site-nav a:hover {
-  background: #ffffff9c;
+  background: var(--accent-2-soft);
+  color: var(--accent-2);
 }
 
 main {
@@ -186,7 +191,7 @@ main {
 
 .service-visual {
   aspect-ratio: 4 / 3;
-  background: linear-gradient(135deg, #e7c4b5, #f8e8df 50%, #d8c7bb);
+  background: linear-gradient(135deg, #e7c4b5, #f8e8df 48%, #dce9e3);
   position: relative;
 }
 
@@ -266,6 +271,10 @@ main {
   padding: 1rem;
 }
 
+.schedule-help {
+  border-top: 4px solid var(--accent-2-mid);
+}
+
 .schedule-card h3,
 .schedule-help h3 {
   margin-top: 0.3rem;
@@ -304,6 +313,14 @@ textarea {
   font: inherit;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-2-mid);
+  box-shadow: 0 0 0 3px rgba(69, 113, 95, 0.14);
+}
+
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -323,18 +340,22 @@ textarea {
 }
 
 .btn-primary {
-  background: var(--ink);
+  background: var(--accent-2);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: #000;
+  background: #25473a;
 }
 
 .btn-ghost {
-  border-color: var(--border);
-  color: var(--ink);
+  border-color: rgba(47, 83, 69, 0.28);
+  color: var(--accent-2);
   background: #ffffffd8;
+}
+
+.btn-ghost:hover {
+  background: var(--accent-2-soft);
 }
 
 .form-note {
