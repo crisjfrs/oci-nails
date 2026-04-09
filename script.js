@@ -1,11 +1,16 @@
+const supabaseClient = window.supabase.createClient(
+  "https://umrcuzkjvnjxqljjnzzl.supabase.co",
+  "sb_publishable_EVT84q7StfuUcJ8gAI7xzg_kroCRRHF",
+);
+
 const CONFIG = {
   studioName: "Oci.Nails",
   whatsappNumber: "6281222773865",
-  calendarEmbedUrl:
-    "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FJakarta&showPrint=0&hl=id&src=YnVjaW4wMTEwMjNAZ21haWwuY29t&color=%23039be5&mode=WEEK",
-  calendarDirectUrl:
-    "https://calendar.google.com/calendar/u/0?cid=YnVjaW4wMTEwMjNAZ21haWwuY29t",
-  appointmentScheduleUrl: "https://calendar.app.google/YOUR_APPOINTMENT_LINK",
+  mapsEmbedUrl:
+    "https://www.google.com/maps?q=-6.9833488,107.6332721&z=17&output=embed",
+  mapsDirectUrl: "https://maps.app.goo.gl/68CXX7Da4C96Rgkw7",
+  instagramUrl: "https://instagram.com/oci.nailsss",
+  tiktokUrl: "https://www.tiktok.com/@oci.nails",
 };
 
 const SERVICES = [
@@ -67,25 +72,38 @@ function renderServices() {
           <small>${service.duration}</small>
         </div>
       </article>
-    `
+    `,
   ).join("");
 
   select.innerHTML =
     '<option value="" selected disabled>Pilih layanan</option>' +
     SERVICES.map(
       (service) =>
-        `<option value="${service.name} ($${service.price})">${service.name} - $${service.price} (${service.duration})</option>`
+        `<option value="${service.name} ($${service.price})">${service.name} - $${service.price} (${service.duration})</option>`,
     ).join("");
 }
 
-function setupCalendar() {
-  const embed = document.getElementById("calendar-embed");
-  const direct = document.getElementById("calendar-direct-link");
-  const headerLink = document.getElementById("open-calendar-link");
+function setupMap() {
+  const embed = document.getElementById("map-embed");
+  const direct = document.getElementById("map-direct-link");
+  const headerLink = document.getElementById("open-map-link");
 
-  embed.src = CONFIG.calendarEmbedUrl;
-  direct.href = CONFIG.appointmentScheduleUrl || CONFIG.calendarDirectUrl;
-  headerLink.href = CONFIG.appointmentScheduleUrl || "#schedule";
+  embed.src = CONFIG.mapsEmbedUrl;
+  direct.href = CONFIG.mapsDirectUrl;
+  headerLink.href = "#location";
+}
+
+function setupSocialLinks() {
+  const instagramLink = document.getElementById("instagram-link");
+  const tiktokLink = document.getElementById("tiktok-link");
+
+  if (instagramLink) {
+    instagramLink.href = CONFIG.instagramUrl;
+  }
+
+  if (tiktokLink) {
+    tiktokLink.href = CONFIG.tiktokUrl;
+  }
 }
 
 function setupBookingForm() {
@@ -93,7 +111,7 @@ function setupBookingForm() {
   const note = document.getElementById("form-note");
   const targetNumber = normalizeWhatsAppNumber(CONFIG.whatsappNumber);
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const data = new FormData(form);
@@ -117,6 +135,33 @@ function setupBookingForm() {
       "Mohon konfirmasi ketersediaannya. Terima kasih!",
     ].join("\n");
 
+    const payload = {
+      name,
+      phone: customerPhone,
+      service,
+      date,
+      time,
+      notes,
+    };
+
+    const { data: existing } = await supabaseClient
+      .from("bookings")
+      .select("*")
+      .eq("date", date)
+      .eq("time", time);
+
+    if (existing.length > 0) {
+      alert("Maaf, slot sudah dibooking. Silakan pilih waktu lain.");
+      return;
+    }
+
+    const { error } = await supabaseClient.from("bookings").insert([payload]);
+
+    if (error) {
+      alert("Gagal simpan booking");
+      return;
+    }
+
     const link = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
 
     note.textContent = "Membuka WhatsApp dengan detail booking kamu...";
@@ -125,5 +170,6 @@ function setupBookingForm() {
 }
 
 renderServices();
-setupCalendar();
+setupMap();
+setupSocialLinks();
 setupBookingForm();

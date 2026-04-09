@@ -20,7 +20,7 @@
     <nav class="site-nav">
       <a href="#services">Treatment</a>
       <a href="#gallery">Galeri</a>
-      <a href="#schedule">Jadwal</a>
+      <a href="#location">Lokasi</a>
       <a href="#booking">Booking</a>
     </nav>
   </header>
@@ -31,22 +31,22 @@
         <p class="eyebrow">Booking nailart lebih praktis</p>
         <h1>LET YOUR NAILS MATCH YOUR VIBES ✨</h1>
         <p>
-          Pilih Treatment, cek jadwal kosong dari Kalender,
+          Pilih treatment, lihat lokasi studio,
           lalu isi form dan kirim request booking WhatsApp.
         </p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#booking">Mulai Booking</a>
-          <a class="btn btn-ghost" id="open-calendar-link" href="#schedule">Lihat Ketersediaan</a>
+          <a class="btn btn-ghost" id="open-map-link" href="#location">Lihat Lokasi Studio</a>
         </div>
       </div>
       <div class="hero-card reveal reveal-delay">
         <h2>Cara Booking?</h2>
         <ol>
-          <li>Pilih Treatment dan Jadwal yang kamu mau.</li>
-          <li>Cek slot kosong di kalender.</li>
+          <li>Pilih treatment yang kamu mau.</li>
+          <li>Lihat lokasi studio di Google Maps.</li>
           <li>Kirim detail booking langsung lewat WhatsApp.</li>
         </ol>
-        <p class="hero-note">Cek Jadwal & Booking cepat.</p>
+        <p class="hero-note">Lihat Lokasi & Booking cepat.</p>
       </div>
     </section>
 
@@ -95,24 +95,24 @@
       </div>
     </section>
 
-    <section class="section schedule" id="schedule">
+    <section class="section schedule" id="location">
       <div class="section-head reveal">
-        <p class="eyebrow">Jadwal studio</p>
-        <h2>Ketersediaan waktu</h2>
-        <p>Pastikan Jadwal tersedia dan segera booking sebelum diambil orang lain ya! 😉</p>
+        <p class="eyebrow">Lokasi studio</p>
+        <h2>Temukan Oci.Nails di Google Maps</h2>
+        <p>Lihat lokasi studio lalu langsung chat WhatsApp untuk reservasi.</p>
       </div>
       <div class="schedule-layout">
         <article class="schedule-card reveal">
-          <h3>Kalender Booking</h3>
-          <iframe id="calendar-embed" title="Ketersediaan kalender Google" loading="lazy"></iframe>
-          <a class="btn btn-ghost" id="calendar-direct-link" target="_blank" rel="noopener">Buka kalender di tab baru</a>
+          <h3>Google Maps</h3>
+          <iframe id="map-embed" title="Lokasi Oci Nails di Google Maps" loading="lazy"></iframe>
+          <a class="btn btn-ghost" id="map-direct-link" target="_blank" rel="noopener">Buka di Aplikasi Google Maps</a>
         </article>
         <article class="schedule-help reveal reveal-delay">
-          <h3>INI NANTI DIEDIT MASIH BINGUNG. Owner mengatur ketersediaan langsung di Google Calendar</h3>
+          <h3>Datang ke studio sesuai jadwal yang sudah disepakati</h3>
           <ul>
-            <li>Blok jadwal yang tidak tersedia di kalender.</li>
-            <li>Sesuaikan durasi layanan sebelum konfirmasi.</li>
-            <li>Bisa pakai link appointment schedule untuk booking mandiri.</li>
+            <li>Pastikan alamat dan patokan sudah sesuai di Maps.</li>
+            <li>Hubungi admin via WhatsApp sebelum berangkat.</li>
+            <li>Customer yang sudah booking akan diutamakan.</li>
           </ul>
         </article>
       </div>
@@ -123,6 +123,15 @@
         <p class="eyebrow">Booking via WhatsApp</p>
         <h2>Wawa mimin sekarang juga!</h2>
       </div>
+
+      <div class="social-box reveal reveal-delay">
+        <p class="social-title">Atau follow sosial media oci.nails untuk info terbaru 🥰</p>
+        <div class="social-links">
+          <a class="social-link" id="instagram-link" target="_blank" rel="noopener">Instagram</a>
+          <a class="social-link" id="tiktok-link" target="_blank" rel="noopener">TikTok</a>
+        </div>
+      </div>
+
       <form id="booking-form" class="booking-form reveal">
         <label>
           Nama lengkap
@@ -162,9 +171,11 @@
   </main>
 
   <footer class="site-footer">
-    <p>Oci.Nails MVP - Static website + Google Calendar + WhatsApp.</p>
+    <p>Oci.Nails MVP - Static website + Google Maps + WhatsApp.</p>
+    <p class="footer-social">Instagram & TikTok tersedia di bagian Booking.</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.js?v=20260407"></script>
 </body>
 </html>
