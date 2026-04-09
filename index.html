@@ -1,181 +1,247 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Oci Nails | Booking Nail Studio</title>
-  <meta name="description" content="Booking appointment nail art dengan cepat. Pilih layanan, cek jadwal, lalu konfirmasi lewat WhatsApp.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="grain"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oci Nails | Booking Nail Studio</title>
+    <meta
+      name="description"
+      content="Booking appointment nail art dengan cepat. Pilih layanan, cek jadwal, lalu konfirmasi lewat WhatsApp."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grain"></div>
 
-  <header class="site-header" id="top">
-    <a class="logo" href="#top" aria-label="Oci Nails home">
-      <img src="img/logo-oci-nails-transparant.png" alt="Oci Nails logo">
-    </a>
-    <nav class="site-nav">
-      <a href="#services">Treatment</a>
-      <a href="#gallery">Galeri</a>
-      <a href="#location">Lokasi</a>
-      <a href="#booking">Booking</a>
-    </nav>
-  </header>
+    <header class="site-header" id="top">
+      <a class="logo" href="#top" aria-label="Oci Nails home">
+        <img src="img/logo-oci-nails-transparant.png" alt="Oci Nails logo" />
+      </a>
+      <nav class="site-nav">
+        <a href="#services">Treatment</a>
+        <a href="#gallery">Galeri</a>
+        <a href="#location">Lokasi</a>
+        <a href="#booking">Booking</a>
+      </nav>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Booking nailart lebih praktis</p>
-        <h1>LET YOUR NAILS MATCH YOUR VIBES ✨</h1>
-        <p>
-          Pilih treatment, lihat lokasi studio,
-          lalu isi form dan kirim request booking WhatsApp.
-        </p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#booking">Mulai Booking</a>
-          <a class="btn btn-ghost" id="open-map-link" href="#location">Lihat Lokasi Studio</a>
+    <main>
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Booking nailart lebih praktis</p>
+          <h1>LET YOUR NAILS MATCH YOUR VIBES ✨</h1>
+          <p>
+            Pilih treatment, lihat lokasi studio, lalu isi form dan kirim
+            request booking WhatsApp.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#booking">Mulai Booking</a>
+            <a class="btn btn-ghost" id="open-map-link" href="#location"
+              >Lihat Lokasi Studio</a
+            >
+          </div>
         </div>
-      </div>
-      <div class="hero-card reveal reveal-delay">
-        <h2>Cara Booking?</h2>
-        <ol>
-          <li>Pilih treatment yang kamu mau.</li>
-          <li>Lihat lokasi studio di Google Maps.</li>
-          <li>Kirim detail booking langsung lewat WhatsApp.</li>
-        </ol>
-        <p class="hero-note">Lihat Lokasi & Booking cepat.</p>
-      </div>
-    </section>
-
-    <section class="section services" id="services">
-      <div class="section-head reveal">
-        <p class="eyebrow">Katalog Treatment</p>
-        <h2>Treatment yang tersedia</h2>
-      </div>
-      <div class="service-grid" id="service-grid"></div>
-    </section>
-
-    <section class="section gallery" id="gallery">
-      <div class="section-head reveal">
-        <p class="eyebrow">Galeri</p>
-        <h2>Inspo Nail Art dan Press On Nails</h2>
-      </div>
-
-      <div class="gallery-group reveal">
-        <h3>Nail Art</h3>
-        <div class="gallery-grid">
-          <figure class="gallery-item">
-            <img src="img/gallery/nail-art/nailart1.jpeg" alt="Nail art design 1">
-          </figure>
-          <figure class="gallery-item">
-            <img src="img/gallery/nail-art/nailart2.jpeg" alt="Nail art design 2">
-          </figure>
-          <figure class="gallery-item">
-            <img src="img/gallery/nail-art/nailart3.jpeg" alt="Nail art design 3">
-          </figure>
+        <div class="hero-card reveal reveal-delay">
+          <h2>Cara Booking?</h2>
+          <ol>
+            <li>Pilih treatment yang kamu mau.</li>
+            <li>Lihat lokasi studio di Google Maps.</li>
+            <li>Kirim detail booking langsung lewat WhatsApp.</li>
+          </ol>
+          <p class="hero-note">Lihat Lokasi & Booking cepat.</p>
         </div>
-      </div>
+      </section>
 
-      <div class="gallery-group reveal reveal-delay">
-        <h3>Press On Nails</h3>
-        <div class="gallery-grid">
-          <figure class="gallery-item">
-            <img src="img/gallery/press-on/presson1.jpeg" alt="Press on nails set 1">
-          </figure>
-          <figure class="gallery-item">
-            <img src="img/gallery/press-on/presson2.jpeg" alt="Press on nails set 2">
-          </figure>
-          <figure class="gallery-item">
-            <img src="img/gallery/press-on/presson3.jpeg" alt="Press on nails set 3">
-          </figure>
+      <section class="section services" id="services">
+        <div class="section-head reveal">
+          <p class="eyebrow">Katalog Treatment</p>
+          <h2>Treatment yang tersedia</h2>
         </div>
-      </div>
-    </section>
+        <div class="service-grid" id="service-grid"></div>
+      </section>
 
-    <section class="section schedule" id="location">
-      <div class="section-head reveal">
-        <p class="eyebrow">Lokasi studio</p>
-        <h2>Temukan Oci.Nails di Google Maps</h2>
-        <p>Lihat lokasi studio lalu langsung chat WhatsApp untuk reservasi.</p>
-      </div>
-      <div class="schedule-layout">
-        <article class="schedule-card reveal">
-          <h3>Google Maps</h3>
-          <iframe id="map-embed" title="Lokasi Oci Nails di Google Maps" loading="lazy"></iframe>
-          <a class="btn btn-ghost" id="map-direct-link" target="_blank" rel="noopener">Buka di Aplikasi Google Maps</a>
-        </article>
-        <article class="schedule-help reveal reveal-delay">
-          <h3>Datang ke studio sesuai jadwal yang sudah disepakati</h3>
-          <ul>
-            <li>Pastikan alamat dan patokan sudah sesuai di Maps.</li>
-            <li>Hubungi admin via WhatsApp sebelum berangkat.</li>
-            <li>Customer yang sudah booking akan diutamakan.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section booking" id="booking">
-      <div class="section-head reveal">
-        <p class="eyebrow">Booking via WhatsApp</p>
-        <h2>Wawa mimin sekarang juga!</h2>
-      </div>
-
-      <div class="social-box reveal reveal-delay">
-        <p class="social-title">Atau follow sosial media oci.nails untuk info terbaru 🥰</p>
-        <div class="social-links">
-          <a class="social-link" id="instagram-link" target="_blank" rel="noopener">Instagram</a>
-          <a class="social-link" id="tiktok-link" target="_blank" rel="noopener">TikTok</a>
+      <section class="section gallery" id="gallery">
+        <div class="section-head reveal">
+          <p class="eyebrow">Galeri</p>
+          <h2>Inspo Nail Art dan Press On Nails</h2>
         </div>
-      </div>
 
-      <form id="booking-form" class="booking-form reveal">
-        <label>
-          Nama lengkap
-          <input type="text" name="name" required placeholder="Nama kamu">
-        </label>
+        <div class="gallery-group reveal">
+          <h3>Nail Art</h3>
+          <div class="gallery-grid">
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/nail-art/nailart1.jpeg"
+                alt="Nail art design 1"
+              />
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/nail-art/nailart2.jpeg"
+                alt="Nail art design 2"
+              />
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/nail-art/nailart3.jpeg"
+                alt="Nail art design 3"
+              />
+            </figure>
+          </div>
+        </div>
 
-        <label>
-          Nomor HP (opsional)
-          <input type="tel" name="customerPhone" placeholder="Contoh: 0812xxxxxxx">
-        </label>
+        <div class="gallery-group reveal reveal-delay">
+          <h3>Press On Nails</h3>
+          <div class="gallery-grid">
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/press-on/presson1.jpeg"
+                alt="Press on nails set 1"
+              />
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/press-on/presson2.jpeg"
+                alt="Press on nails set 2"
+              />
+            </figure>
+            <figure class="gallery-item">
+              <img
+                src="img/gallery/press-on/presson3.jpeg"
+                alt="Press on nails set 3"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
 
-        <label>
-          Treatment
-          <select name="service" id="service-select" required></select>
-        </label>
+      <section class="section schedule" id="location">
+        <div class="section-head reveal">
+          <p class="eyebrow">Lokasi studio</p>
+          <h2>Temukan Oci.Nails di Google Maps</h2>
+          <p>
+            Lihat lokasi studio lalu langsung chat WhatsApp untuk reservasi.
+          </p>
+        </div>
+        <div class="schedule-layout">
+          <article class="schedule-card reveal">
+            <h3>Google Maps</h3>
+            <iframe
+              id="map-embed"
+              title="Lokasi Oci Nails di Google Maps"
+              loading="lazy"
+            ></iframe>
+            <a
+              class="btn btn-ghost"
+              id="map-direct-link"
+              target="_blank"
+              rel="noopener"
+              >Buka di Aplikasi Google Maps</a
+            >
+          </article>
+          <article class="schedule-help reveal reveal-delay">
+            <h3>Datang ke studio sesuai jadwal yang sudah disepakati</h3>
+            <ul>
+              <li>Pastikan alamat dan patokan sudah sesuai di Maps.</li>
+              <li>Hubungi admin via WhatsApp sebelum berangkat.</li>
+              <li>Customer yang sudah booking akan diutamakan.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
 
-        <div class="split">
+      <section class="section booking" id="booking">
+        <div class="section-head reveal">
+          <p class="eyebrow">Booking via WhatsApp</p>
+          <h2>Wawa mimin sekarang juga!</h2>
+        </div>
+
+        <div class="social-box reveal reveal-delay">
+          <p class="social-title">
+            Atau follow sosial media oci.nails untuk info terbaru 🥰
+          </p>
+          <div class="social-links">
+            <a
+              class="social-link"
+              id="instagram-link"
+              target="_blank"
+              rel="noopener"
+              >Instagram</a
+            >
+            <a
+              class="social-link"
+              id="tiktok-link"
+              target="_blank"
+              rel="noopener"
+              >TikTok</a
+            >
+          </div>
+        </div>
+
+        <form id="booking-form" class="booking-form reveal">
           <label>
-            Tanggal yang diinginkan
-            <input type="date" name="date" required>
+            Nama lengkap
+            <input type="text" name="name" required placeholder="Nama kamu" />
           </label>
+
           <label>
-            Jam yang diinginkan
-            <input type="time" name="time" required>
+            Nomor HP (opsional)
+            <input
+              type="tel"
+              name="customerPhone"
+              placeholder="Contoh: 0812xxxxxxx"
+            />
           </label>
-        </div>
 
-        <label>
-          Catatan
-          <textarea name="notes" rows="4" placeholder="Contoh: request desain atau warna tertentu"></textarea>
-        </label>
+          <label>
+            Treatment
+            <select name="service" id="service-select" required></select>
+          </label>
 
-        <button type="submit" class="btn btn-primary">Kirim via WhatsApp</button>
-        <p class="form-note" id="form-note"></p>
-      </form>
-    </section>
-  </main>
+          <div class="split">
+            <label>
+              Tanggal yang diinginkan
+              <input type="date" name="date" required />
+            </label>
+            <label>
+              Jam yang diinginkan
+              <select name="time" id="time-select" required>
+                <option value="">Pilih jam</option>
+              </select>
+            </label>
+          </div>
 
-  <footer class="site-footer">
-    <p>Oci.Nails MVP - Static website + Google Maps + WhatsApp.</p>
-    <p class="footer-social">Instagram & TikTok tersedia di bagian Booking.</p>
-  </footer>
+          <label>
+            Catatan
+            <textarea
+              name="notes"
+              rows="4"
+              placeholder="Contoh: request desain atau warna tertentu"
+            ></textarea>
+          </label>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="script.js?v=20260407"></script>
-</body>
+          <button type="submit" class="btn btn-primary">
+            Kirim via WhatsApp
+          </button>
+          <p class="form-note" id="form-note"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Oci.Nails MVP - Static website + Google Maps + WhatsApp.</p>
+      <p class="footer-social">
+        Instagram & TikTok tersedia di bagian Booking.
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="script.js?v=20260407"></script>
+  </body>
 </html>

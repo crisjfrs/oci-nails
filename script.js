@@ -15,32 +15,58 @@ const CONFIG = {
 
 const SERVICES = [
   {
+    id: "menicure",
+    name: "Manicure",
+    price: 30000,
+    displayDuration: 30,
+    actualDuration: 60,
+    description: "Perawatan dasar kuku tanpa gel color.",
+    image: "img/treatment/menicure.jpg",
+  },
+  {
     id: "menicure-gel",
     name: "Manicure + Gel Color",
-    price: 35,
-    duration: "60 menit",
+    price: [60000, 300000],
+    displayDuration: 60,
+    actualDuration: 120,
     description: "Perawatan dasar kuku dengan hasil akhir gel color.",
+    image: "img/treatment/menicure-gel.jpg",
+  },
+  {
+    id: "pedicure",
+    name: "Pedicure",
+    price: 30000,
+    displayDuration: 30,
+    actualDuration: 60,
+    description: "Perawatan kaki tanpa gel color.",
+    image: "img/treatment/pedicure.jpg",
   },
   {
     id: "pedicure-gel",
     name: "Pedicure + Gel Color",
-    price: 40,
-    duration: "75 menit",
+    price: [60000, 300000],
+    displayDuration: 60,
+    actualDuration: 120,
     description: "Perawatan kaki sekaligus aplikasi gel color.",
+    image: "img/treatment/pedicure-gel.jpg",
   },
   {
     id: "press-on-custom",
     name: "Press On Nails Custom",
-    price: 60,
-    duration: "90 menit",
+    price: [50000, 300000],
+    displayDuration: 60,
+    actualDuration: 120,
     description: "Pembuatan press on nails custom sesuai request.",
+    image: "img/treatment/press-on-custom.jpg",
   },
   {
     id: "remove-gel-extension",
     name: "Remove Gel/Extension",
-    price: 20,
-    duration: "30 menit",
+    price: [30000, 40000],
+    displayDuration: 30,
+    actualDuration: 60,
     description: "Layanan pelepasan gel atau extension dengan aman.",
+    image: "img/treatment/remove-gel-extension.jpg",
   },
 ];
 
@@ -55,6 +81,18 @@ function normalizeWhatsAppNumber(rawNumber) {
   return digitsOnly;
 }
 
+function formatRupiah(price) {
+  if (Array.isArray(price)) {
+    return (
+      "Rp" +
+      Number(price[0]).toLocaleString("id-ID") +
+      "–" +
+      Number(price[1]).toLocaleString("id-ID")
+    );
+  }
+  return "Rp" + Number(price).toLocaleString("id-ID");
+}
+
 function renderServices() {
   const grid = document.getElementById("service-grid");
   const select = document.getElementById("service-select");
@@ -62,14 +100,16 @@ function renderServices() {
   grid.innerHTML = SERVICES.map(
     (service) => `
       <article class="service-card">
-        <div class="service-visual" aria-hidden="true"></div>
+        <div class="service-visual" aria-hidden="true">
+          <img src="${service.image}" alt="${service.name}" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" />
+        </div>
         <div class="service-content">
           <div class="service-top">
             <h3>${service.name}</h3>
-            <span class="badge">$${service.price}</span>
+            <span class="badge">${formatRupiah(service.price)}</span>
           </div>
           <p>${service.description}</p>
-          <small>${service.duration}</small>
+          <small>${service.displayDuration} menit</small>
         </div>
       </article>
     `,
@@ -79,8 +119,27 @@ function renderServices() {
     '<option value="" selected disabled>Pilih layanan</option>' +
     SERVICES.map(
       (service) =>
-        `<option value="${service.name} ($${service.price})">${service.name} - $${service.price} (${service.duration})</option>`,
+        `<option value="${service.name} (${formatRupiah(service.price)})">${service.name} : ${formatRupiah(service.price)} (${service.displayDuration} menit)</option>`,
     ).join("");
+}
+
+function generateTimeSlots() {
+  const slots = [];
+
+  for (let hour = 9; hour <= 18; hour++) {
+    const time = `${String(hour).padStart(2, "0")}:00`;
+    slots.push(time);
+  }
+
+  return slots;
+}
+
+function renderTimeOptions(slots) {
+  const select = document.getElementById("time-select");
+
+  select.innerHTML =
+    '<option value="">Pilih jam</option>' +
+    slots.map((t) => `<option value="${t}">${t}</option>`).join("");
 }
 
 function setupMap() {
@@ -122,6 +181,35 @@ function setupBookingForm() {
     const time = data.get("time");
     const notes = data.get("notes") || "Tidak ada";
 
+    const selectedService = SERVICES.find((s) => service.includes(s.name));
+
+    const duration = selectedService.actualDuration;
+
+    const start = new Date(`${date}T${time}`);
+    const end = new Date(start.getTime() + duration * 60000);
+
+    const { data: bookings } = await supabaseClient
+      .from("bookings")
+      .select("*")
+      .eq("date", date);
+
+    const isConflict = (bookings || []).some((b) => {
+      const bStart = new Date(`${b.date}T${b.time}`);
+
+      const bService = SERVICES.find((s) => b.service.includes(s.name));
+
+      if (!bService) return false;
+
+      const bEnd = new Date(bStart.getTime() + bService.actualDuration * 60000);
+
+      return start < bEnd && end > bStart;
+    });
+
+    if (isConflict) {
+      alert("Slot bentrok, pilih waktu lain");
+      return;
+    }
+
     const message = [
       `Halo ${CONFIG.studioName}, saya ingin booking appointment.`,
       "",
@@ -144,17 +232,6 @@ function setupBookingForm() {
       notes,
     };
 
-    const { data: existing } = await supabaseClient
-      .from("bookings")
-      .select("*")
-      .eq("date", date)
-      .eq("time", time);
-
-    if (existing.length > 0) {
-      alert("Maaf, slot sudah dibooking. Silakan pilih waktu lain.");
-      return;
-    }
-
     const { error } = await supabaseClient.from("bookings").insert([payload]);
 
     if (error) {
@@ -173,3 +250,6 @@ renderServices();
 setupMap();
 setupSocialLinks();
 setupBookingForm();
+
+const slots = generateTimeSlots();
+renderTimeOptions(slots);
