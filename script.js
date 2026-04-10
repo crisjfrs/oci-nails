@@ -20,7 +20,8 @@ const SERVICES = [
     price: 30000,
     displayDuration: 30,
     actualDuration: 60,
-    description: "Perawatan dasar kuku tanpa gel color.",
+    description:
+      "Biar kuku tangan kamu lebih rapi, bersih, dan enak dilihat. Cocok buat yang pengen tampil simple tapi tetap terawat",
     image: "img/treatment/menicure.jpg",
   },
   {
@@ -29,7 +30,8 @@ const SERVICES = [
     price: [60000, 300000],
     displayDuration: 60,
     actualDuration: 120,
-    description: "Perawatan dasar kuku dengan hasil akhir gel color.",
+    description:
+      "Hasil cantik dan tahan lama. Cocok kalau kamu mau kuku yang lebih standout tanpa perlu sering touch up",
     image: "img/treatment/menicure-gel.jpg",
   },
   {
@@ -38,7 +40,8 @@ const SERVICES = [
     price: 30000,
     displayDuration: 30,
     actualDuration: 60,
-    description: "Perawatan kaki tanpa gel color.",
+    description:
+      "Bikin kaki kamu lebih bersih, halus, dan nyaman. Enak banget buat self-care atau sebelum pakai sandal biar makin pede",
     image: "img/treatment/pedicure.jpg",
   },
   {
@@ -47,7 +50,8 @@ const SERVICES = [
     price: [60000, 300000],
     displayDuration: 60,
     actualDuration: 120,
-    description: "Perawatan kaki sekaligus aplikasi gel color.",
+    description:
+      "Pedicure lengkap dengan gel color yang glossy dan awet. Kaki jadi kelihatan lebih rapi, cantik, dan sehat",
     image: "img/treatment/pedicure-gel.jpg",
   },
   {
@@ -56,7 +60,8 @@ const SERVICES = [
     price: [50000, 300000],
     displayDuration: 60,
     actualDuration: 120,
-    description: "Pembuatan press on nails custom sesuai request.",
+    description:
+      "Mau kuku cantik tanpa lama di salon? Press on custom ini bisa jadi solusi. Desain sesuai keinginan, tinggal pasang dan langsung cakep",
     image: "img/treatment/press-on-custom.jpg",
   },
   {
@@ -65,7 +70,8 @@ const SERVICES = [
     price: [30000, 40000],
     displayDuration: 30,
     actualDuration: 60,
-    description: "Layanan pelepasan gel atau extension dengan aman.",
+    description:
+      "Lepas gel atau extension dengan aman tanpa bikin kuku rusak. Biar kuku tetap sehat dan siap buat treatment selanjutnya",
     image: "img/treatment/remove-gel-extension.jpg",
   },
 ];
