@@ -199,16 +199,7 @@ main {
   position: relative;
 }
 
-.service-visual::after {
-  content: "";
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  right: -24px;
-  top: -24px;
-  border-radius: 999px;
-  border: 2px solid rgba(23, 21, 21, 0.14);
-}
+
 
 .service-content {
   padding: 1rem 1rem 1.1rem;
