@@ -481,6 +481,7 @@ textarea:focus {
   display: block;
 }
 
+
 .shop {
   margin-top: 3.6rem;
   background: linear-gradient(140deg, #fffaf8, var(--card));
@@ -509,7 +510,6 @@ textarea:focus {
   box-shadow: var(--shadow);
 }
 
-@media (max-width: 680px) {
 @media (max-width: 680px) {
   .shop {
     padding: 1.1rem 0.5rem 1.5rem 0.5rem;
