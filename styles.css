@@ -1,3 +1,28 @@
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(37,24,16,0.07);
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+}
+.footer-logo:hover {
+  box-shadow: 0 4px 16px rgba(37,24,16,0.13);
+  transform: translateY(-2px) scale(1.08);
+}
+.footer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 50%;
+}
 :root {
   --bg: #f2e9e5;
   --bg-soft: #f8f2ee;
@@ -121,7 +146,14 @@ main {
 
 .hero-copy h1 {
   font-family: "Prata", serif;
-  font-size: clamp(2.1rem, 2.8vw, 2.5rem);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.08;
+  margin: 0.5rem 0 1rem;
+}
+
+.hero-copy h2 {
+  font-family: "Prata", serif;
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
   line-height: 1.08;
   margin: 0.5rem 0 1rem;
 }
@@ -187,6 +219,29 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.testimonial-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.testimonial-item {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+.testimonial-item img {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  display: block;
 }
 
 .service-card {
@@ -404,8 +459,71 @@ textarea:focus {
 }
 
 .footer-social {
-  margin-top: 0.35rem;
-  font-size: 0.92rem;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 25%;
+  overflow: hidden;
+  display: inline-flex;
+}
+
+.footer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25%;
+  display: block;
+}
+
+.shop {
+  margin-top: 3.6rem;
+  background: linear-gradient(140deg, #fffaf8, var(--card));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 2.2rem 1.5rem 2.5rem 1.5rem;
+  text-align: left;
+}
+
+.shop .section-head {
+  margin-bottom: 1.5rem;
+}
+
+.shop-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.shop-links .btn {
+  min-width: 140px;
+  font-size: 1.08rem;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 680px) {
+@media (max-width: 680px) {
+  .shop {
+    padding: 1.1rem 0.5rem 1.5rem 0.5rem;
+    border-radius: 18px;
+  }
+  .shop-links {
+    flex-direction: row;
+    gap: 0.7rem;
+    align-items: center;
+  }
+  .shop-links .btn {
+    width: auto;
+    min-width: 120px;
+  }
 }
 
 .reveal {
@@ -436,6 +554,10 @@ textarea:focus {
   }
 
   .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonial-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -508,6 +630,7 @@ textarea:focus {
   }
 
   .service-grid,
+  .testimonial-grid,
   .gallery-grid,
   .split {
     grid-template-columns: 1fr;
