@@ -31,7 +31,7 @@ const SERVICES = [
     displayDuration: 60,
     actualDuration: 120,
     description:
-      "Hasil cantik dan tahan lama. Cocok kalau kamu mau kuku yang lebih standout tanpa perlu sering touch up",
+      "Hasil cantik dan tahan lama. Cocok kalau kamu mau kuku yang lebih standout tanpa perlu sering touch up. Buat design sesuka kamu",
     image: "img/treatment/menicure-gel.jpg",
   },
   {
