@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oci Nails Admin | Dashboard Booking</title>
+    <meta
+      name="description"
+      content="Dashboard admin Oci Nails untuk tambah booking manual, reschedule, cancel, dan lihat jadwal harian."
+    />
+    <meta name="theme-color" content="#214536" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="app-icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Prata&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="app.css?v=20260415" />
+  </head>
+  <body class="page-admin">
+    <div class="grain"></div>
+
+    <header class="site-header site-header-admin">
+      <a class="logo" href="index.html" aria-label="Oci Nails home">
+        <img src="img/logo-oci-nails-transparant.png" alt="Oci Nails logo" />
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Website</a>
+        <a href="#admin-form">Tambah Booking</a>
+        <a href="#admin-list">Jadwal Hari Ini</a>
+      </nav>
+      <button type="button" class="btn btn-primary header-install" data-install-app hidden>
+        Install Dashboard
+      </button>
+    </header>
+
+    <main class="admin-main">
+      <section class="section hero admin-hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Dashboard admin PWA</p>
+          <h1>INPUT CEPAT DARI WHATSAPP, RESCHEDULE, DAN CANCEL DALAM SATU LAYAR</h1>
+          <p class="hero-lead">
+            Semua perubahan booking dilakukan dari dashboard ini agar Supabase tetap jadi pusat data
+            sebelum sync ke Google Calendar.
+          </p>
+          <div class="hero-cta">
+            <button type="button" class="btn btn-primary" id="quick-today">Jadwal Hari Ini</button>
+            <button type="button" class="btn btn-ghost" id="quick-tomorrow">Besok</button>
+          </div>
+        </div>
+        <div class="hero-card reveal reveal-delay">
+          <p class="eyebrow">Aturan baru</p>
+          <ul>
+            <li>Tambah booking manual dari chat atau offline di dashboard.</li>
+            <li>Reschedule ubah data booking dulu, bukan edit manual kalender.</li>
+            <li>Cancel akan menghapus event kalender lewat sync, bukan dihapus langsung manual.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section admin-stats" id="admin-stats"></section>
+
+      <section class="section admin-layout">
+        <article class="admin-panel admin-editor reveal" id="admin-form">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Editor booking</p>
+              <h2 id="editor-title">Tambah booking manual</h2>
+            </div>
+            <button type="button" class="btn btn-ghost" id="admin-reset">Reset Form</button>
+          </div>
+
+          <form id="admin-booking-form" class="booking-form admin-form">
+            <div class="split split-compact">
+              <label>
+                Nama customer
+                <input id="admin-name" type="text" name="name" required placeholder="Nama customer" />
+              </label>
+              <label>
+                Nomor HP
+                <input id="admin-phone" type="tel" name="phone" placeholder="08xxxx" />
+              </label>
+            </div>
+
+            <div class="split split-compact">
+              <label>
+                Source
+                <select id="admin-source" name="source"></select>
+              </label>
+              <label>
+                Treatment
+                <select id="admin-service" name="serviceId"></select>
+              </label>
+            </div>
+
+            <div class="split split-compact">
+              <label>
+                Tanggal
+                <input id="admin-date" type="date" name="date" required />
+              </label>
+              <label>
+                Jam
+                <select id="admin-time" name="time" required></select>
+              </label>
+            </div>
+
+            <label>
+              Catatan
+              <textarea
+                id="admin-notes"
+                name="notes"
+                rows="4"
+                placeholder="Contoh: booking dari chat, request desain, atau catatan reschedule"
+              ></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Tambah Booking</button>
+            <p class="form-note" id="admin-form-note">
+              Booking dari WhatsApp atau offline bisa diinput di sini.
+            </p>
+          </form>
+        </article>
+
+        <article class="admin-panel admin-schedule reveal reveal-delay" id="admin-list">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Jadwal per hari</p>
+              <h2 id="admin-day-title"></h2>
+            </div>
+            <p id="admin-day-subtitle"></p>
+          </div>
+
+          <div class="date-rail" id="admin-date-rail"></div>
+          <div class="admin-booking-list" id="admin-booking-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="shared.js?v=20260415"></script>
+    <script src="admin.js?v=20260415"></script>
+  </body>
+</html>

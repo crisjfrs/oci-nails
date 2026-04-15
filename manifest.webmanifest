@@ -1,0 +1,24 @@
+{
+  "name": "Oci Nails Booking",
+  "short_name": "Oci Nails",
+  "description": "PWA booking dan dashboard admin Oci Nails.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4ece6",
+  "theme_color": "#214536",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./mask-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

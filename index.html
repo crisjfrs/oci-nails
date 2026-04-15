@@ -3,20 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Oci Nails | Booking Nail Studio</title>
+    <title>Oci Nails | Booking Studio & Kalender Ketersediaan</title>
     <meta
       name="description"
-      content="Booking appointment nail art dengan cepat. Pilih layanan, cek jadwal, lalu konfirmasi lewat WhatsApp."
+      content="Booking nail studio langsung dari website dengan kalender slot kosong realtime, lalu lanjut konfirmasi cepat via WhatsApp."
     />
+    <meta name="theme-color" content="#214536" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="app-icon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Prata&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="app.css?v=20260415" />
   </head>
-  <body>
+  <body class="page-public">
     <div class="grain"></div>
 
     <header class="site-header" id="top">
@@ -26,37 +29,58 @@
       <nav class="site-nav">
         <a href="#services">Treatment</a>
         <a href="#gallery">Galeri</a>
-        <a href="#location">Lokasi</a>
         <a href="#booking">Booking</a>
+        <a href="admin.html">Dashboard Admin</a>
       </nav>
+      <button type="button" class="btn btn-ghost header-install" data-install-app hidden>
+        Install App
+      </button>
     </header>
 
     <main>
-      <section class="hero">
+      <section class="hero hero-grid">
         <div class="hero-copy reveal">
-          <p class="eyebrow">Booking nailart lebih praktis</p>
-          <h1>NAIL ART STUDIO DI BANDUNG</h1>
-          <h2>Rapih, Detail dan Tahan Lama</h2>
-          <p>Booking treatmentmu dalam 1 menit via WhatsApp.</p>
+          <p class="eyebrow">Upgrade flow booking</p>
+          <h1>SEMUA BOOKING MASUK SISTEM DULU, BARU KE KALENDER ADMIN</h1>
+          <p class="hero-lead">
+            Customer bisa lihat slot yang masih kosong lewat kalender custom. Admin tetap bisa
+            input dari WhatsApp atau offline lewat dashboard yang sama.
+          </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#booking">Mulai Booking</a>
+            <a class="btn btn-primary" href="#booking">Pilih Jadwal</a>
+            <a class="btn btn-ghost" href="admin.html">Masuk Dashboard</a>
           </div>
         </div>
         <div class="hero-card reveal reveal-delay">
-          <h2>Cara Booking?</h2>
+          <p class="eyebrow">Flow baru</p>
           <ol>
-            <li>Pilih treatment</li>
-            <li>Pilih waktu</li>
-            <li>Kirim booking langsung lewat WhatsApp.</li>
+            <li>User booking dari website atau admin input manual.</li>
+            <li>Semua data tersimpan ke Supabase.</li>
+            <li>Supabase sync ke Google Calendar otomatis.</li>
           </ol>
-          <p class="hero-note">Lihat Lokasi & Booking cepat.</p>
+          <p class="hero-note">Tidak ada lagi input manual langsung ke Google Calendar.</p>
         </div>
+      </section>
+
+      <section class="section highlight-strip reveal">
+        <article>
+          <p>Kalender custom</p>
+          <strong>Warna slot, highlight kosong, durasi service</strong>
+        </article>
+        <article>
+          <p>PWA admin</p>
+          <strong>Bisa dipasang di HP dan cepat untuk input offline</strong>
+        </article>
+        <article>
+          <p>Source of truth</p>
+          <strong>Supabase jadi pusat data untuk create, reschedule, cancel</strong>
+        </article>
       </section>
 
       <section class="section testimonials" id="testimonials">
         <div class="section-head reveal">
           <p class="eyebrow">Testimoni</p>
-          <h2>Testimoni Real dari Customer Oci.Nails</h2>
+          <h2>Testimoni real dari customer Oci.Nails</h2>
         </div>
         <div class="testimonial-grid">
           <figure class="testimonial-item reveal">
@@ -84,6 +108,7 @@
         <div class="section-head reveal">
           <p class="eyebrow">Katalog Treatment</p>
           <h2>Treatment yang tersedia</h2>
+          <p>Pilih service dulu, lalu kalender akan otomatis hitung durasi yang dibutuhkan.</p>
         </div>
         <div class="service-grid" id="service-grid"></div>
       </section>
@@ -91,7 +116,7 @@
       <section class="section gallery" id="gallery">
         <div class="section-head reveal">
           <p class="eyebrow">Galeri</p>
-          <h2>Inspo Nail Art dan Press On Nails</h2>
+          <h2>Inspo nail art dan press on nails</h2>
         </div>
         <div class="gallery-group reveal">
           <h3>Nail Art</h3>
@@ -123,11 +148,105 @@
         </div>
       </section>
 
+      <section class="section booking" id="booking">
+        <div class="section-head reveal">
+          <p class="eyebrow">Booking realtime</p>
+          <h2>Pilih treatment, tanggal, lalu slot kosong yang paling pas</h2>
+          <p>Slot berwarna dibuat otomatis dari booking yang sudah masuk ke Supabase.</p>
+        </div>
+
+        <div class="booking-layout">
+          <article class="calendar-panel reveal">
+            <div class="field-stack">
+              <label>
+                Treatment
+                <select id="service-select" aria-label="Pilih treatment"></select>
+              </label>
+            </div>
+
+            <div id="service-summary"></div>
+
+            <div class="calendar-card">
+              <div class="calendar-head">
+                <div>
+                  <p class="eyebrow">Kalender ketersediaan</p>
+                  <h3 id="calendar-month-label"></h3>
+                </div>
+                <div class="calendar-nav">
+                  <button type="button" class="btn btn-ghost icon-btn" id="prev-month">
+                    &larr;
+                  </button>
+                  <button type="button" class="btn btn-ghost icon-btn" id="next-month">
+                    &rarr;
+                  </button>
+                </div>
+              </div>
+
+              <div class="calendar-legend" id="calendar-legend"></div>
+              <div class="calendar-days" id="calendar-days"></div>
+              <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+
+            <div class="slot-panel">
+              <div class="slot-head">
+                <div>
+                  <p class="eyebrow">Slot pilihan</p>
+                  <h3 id="selected-date-label">Pilih tanggal</h3>
+                </div>
+                <p id="selected-range-label">Slot akan mengikuti durasi service</p>
+              </div>
+              <div class="slot-list" id="slot-list"></div>
+            </div>
+          </article>
+
+          <form id="booking-form" class="booking-form reveal">
+            <div class="form-intro">
+              <p class="eyebrow">Konfirmasi cepat</p>
+              <h3>Data customer</h3>
+            </div>
+
+            <label>
+              Nama lengkap
+              <input type="text" name="name" required placeholder="Nama kamu" />
+            </label>
+            <label>
+              Nomor HP
+              <input type="tel" name="customerPhone" required placeholder="Contoh: 0812xxxxxxx" />
+            </label>
+
+            <div class="split">
+              <label>
+                Tanggal terpilih
+                <input type="date" name="date" readonly required />
+              </label>
+              <label>
+                Jam terpilih
+                <input type="time" name="time" readonly required />
+              </label>
+            </div>
+
+            <label>
+              Catatan
+              <textarea
+                name="notes"
+                rows="4"
+                placeholder="Contoh: request warna, desain, atau info tambahan"
+              ></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Simpan Booking & Buka WhatsApp</button>
+            <p class="form-note" id="form-note">
+              Booking akan masuk ke sistem dulu, lalu admin tinggal konfirmasi lewat WhatsApp.
+            </p>
+          </form>
+        </div>
+      </section>
+
       <section class="section schedule" id="location">
         <div class="section-head reveal">
           <p class="eyebrow">Lokasi studio</p>
           <h2>Temukan Oci.Nails di Google Maps</h2>
-          <p>Lihat lokasi studio lalu langsung chat WhatsApp untuk reservasi.</p>
+          <p>Datang sesuai jadwal booking yang sudah kamu pilih di kalender.</p>
         </div>
         <div class="schedule-layout">
           <article class="schedule-card reveal">
@@ -142,69 +261,14 @@
             </a>
           </article>
           <article class="schedule-help reveal reveal-delay">
-            <h3>Datang ke studio sesuai jadwal yang sudah disepakati</h3>
+            <h3>Kenapa flow ini lebih aman?</h3>
             <ul>
-              <li>Pastikan alamat dan patokan sudah sesuai di Maps.</li>
-              <li>Hubungi admin via WhatsApp sebelum berangkat.</li>
-              <li>Customer yang sudah booking akan diutamakan.</li>
+              <li>Reschedule dan cancel tetap lewat dashboard admin, bukan edit manual kalender.</li>
+              <li>Slot kosong dihitung otomatis sesuai durasi service.</li>
+              <li>Booking website dan booking manual masuk ke data yang sama.</li>
             </ul>
           </article>
         </div>
-      </section>
-
-      <section class="section shop">
-        <div class="section-head">
-          <p class="eyebrow">Beli Online</p>
-          <h2>Press On Nails Custom Siap Pakai</h2>
-          <p>Lokasi jauh? ga bisa dateng ke studio? Order langsung lewat marketplace favorit kamu!</p>
-        </div>
-        <div class="shop-links">
-          <a class="btn btn-primary" href="https://id.shp.ee/N12vHth" target="_blank">Shopee</a>
-          <a class="btn btn-ghost" href="https://vt.tokopedia.com/t/ZS9Ljg1Vqxwme-skYUH/" target="_blank">TikTok Shop</a>
-        </div>
-      </section>
-
-      <section class="section booking" id="booking">
-        <div class="section-head reveal">
-          <p class="eyebrow">Booking via WhatsApp</p>
-          <h2>Wawa mimin sekarang juga!</h2>
-        </div>
-        <form id="booking-form" class="booking-form reveal">
-          <label>
-            Nama lengkap
-            <input type="text" name="name" required placeholder="Nama kamu" />
-          </label>
-          <label>
-            Nomor HP (opsional)
-            <input type="tel" name="customerPhone" placeholder="Contoh: 0812xxxxxxx" />
-          </label>
-          <label>
-            Treatment
-            <select name="service" id="service-select" required></select>
-          </label>
-          <div class="split">
-            <label>
-              Tanggal yang diinginkan
-              <input type="date" name="date" required />
-            </label>
-            <label>
-              Jam yang diinginkan
-              <select name="time" id="time-select" required>
-                <option value="">Pilih jam</option>
-              </select>
-            </label>
-          </div>
-          <label>
-            Catatan
-            <textarea
-              name="notes"
-              rows="4"
-              placeholder="Contoh: request desain atau warna tertentu"
-            ></textarea>
-          </label>
-          <button type="submit" class="btn btn-primary">Kirim via WhatsApp</button>
-          <p class="form-note" id="form-note"></p>
-        </form>
       </section>
     </main>
 
@@ -215,6 +279,7 @@
           href="https://www.instagram.com/oci.nailsss?igsh=Z2xia3NhOTBuem12"
           class="footer-logo"
           target="_blank"
+          rel="noopener"
           aria-label="Instagram"
         >
           <img src="img/logo-ig.jpg" alt="Instagram" />
@@ -223,6 +288,7 @@
           href="https://www.tiktok.com/@oci.nails?_r=1&_t=ZS-95RsUCccBVo"
           class="footer-logo"
           target="_blank"
+          rel="noopener"
           aria-label="TikTok"
         >
           <img src="img/logo-tiktok.jpg" alt="TikTok" />
@@ -231,6 +297,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="script.js?v=20260415"></script>
+    <script src="shared.js?v=20260415"></script>
+    <script src="app.js?v=20260415"></script>
   </body>
 </html>
