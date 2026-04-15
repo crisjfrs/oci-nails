@@ -1,28 +1,3 @@
-.footer-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(37,24,16,0.07);
-  transition: box-shadow 0.2s, transform 0.2s;
-  border: 1.5px solid var(--border);
-  overflow: hidden;
-}
-.footer-logo:hover {
-  box-shadow: 0 4px 16px rgba(37,24,16,0.13);
-  transform: translateY(-2px) scale(1.08);
-}
-.footer-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  border-radius: 50%;
-}
 :root {
   --bg: #f2e9e5;
   --bg-soft: #f8f2ee;
@@ -54,7 +29,8 @@ html {
 body {
   font-family: "Manrope", sans-serif;
   color: var(--ink);
-  background: radial-gradient(1200px 700px at 88% -4%, #f7d7c7 0%, transparent 55%),
+  background:
+    radial-gradient(1200px 700px at 88% -4%, #f7d7c7 0%, transparent 55%),
     radial-gradient(760px 460px at 90% 88%, #d9e8df 0%, transparent 58%),
     radial-gradient(900px 550px at 0% 100%, #ecdccf 0%, transparent 56%),
     var(--bg);
@@ -71,6 +47,8 @@ body {
   background-size: 3px 3px;
 }
 
+/* ---- Header ---- */
+
 .site-header {
   width: min(1100px, 92vw);
   margin: 1rem auto 0;
@@ -84,7 +62,6 @@ body {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  padding: 0;
 }
 
 .logo img {
@@ -115,6 +92,8 @@ body {
   color: var(--accent-2);
 }
 
+/* ---- Layout ---- */
+
 main {
   width: min(1100px, 92vw);
   margin: 1rem auto 4rem;
@@ -122,11 +101,32 @@ main {
   z-index: 1;
 }
 
-.hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
+.section {
+  margin-top: 3.6rem;
 }
+
+.section-head h2 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  font-family: "Prata", serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+}
+
+.section-head p {
+  margin-top: 0;
+  color: var(--ink-muted);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-2);
+  margin: 0 0 0.75rem;
+}
+
+/* ---- Cards (shared) ---- */
 
 .hero-copy,
 .hero-card,
@@ -138,6 +138,14 @@ main {
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow);
+}
+
+/* ---- Hero ---- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.2rem;
 }
 
 .hero-copy {
@@ -189,37 +197,7 @@ main {
   font-weight: 600;
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-2);
-  margin: 0 0 0.75rem;
-}
-
-.section {
-  margin-top: 3.6rem;
-}
-
-.section-head h2 {
-  margin-top: 0;
-  margin-bottom: 0.4rem;
-  font-family: "Prata", serif;
-  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-}
-
-.section-head p {
-  margin-top: 0;
-  color: var(--ink-muted);
-}
-
-.service-grid {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
+/* ---- Testimonials ---- */
 
 .testimonial-grid {
   margin-top: 1rem;
@@ -244,6 +222,15 @@ main {
   display: block;
 }
 
+/* ---- Services ---- */
+
+.service-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .service-card {
   overflow: hidden;
 }
@@ -251,10 +238,7 @@ main {
 .service-visual {
   aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, #e7c4b5, #f8e8df 48%, #dce9e3);
-  position: relative;
 }
-
-
 
 .service-content {
   padding: 1rem 1rem 1.1rem;
@@ -279,12 +263,7 @@ main {
   color: var(--accent-2);
 }
 
-.schedule-layout {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
-  gap: 1rem;
-}
+/* ---- Gallery ---- */
 
 .gallery-group {
   margin-top: 1.2rem;
@@ -317,6 +296,15 @@ main {
   display: block;
 }
 
+/* ---- Location ---- */
+
+.schedule-layout {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 1rem;
+}
+
 .schedule-card,
 .schedule-help {
   padding: 1rem;
@@ -340,47 +328,42 @@ main {
   background: var(--bg-soft);
 }
 
+/* ---- Shop ---- */
+
+.shop {
+  margin-top: 3.6rem;
+  background: linear-gradient(140deg, #fffaf8, var(--card));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 2.2rem 1.5rem 2.5rem;
+}
+
+.shop .section-head {
+  margin-bottom: 1.5rem;
+}
+
+.shop-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.shop-links .btn {
+  min-width: 140px;
+  font-size: 1.08rem;
+  box-shadow: var(--shadow);
+}
+
+/* ---- Booking form ---- */
+
 .booking-form {
   margin-top: 1rem;
   padding: 1.2rem;
   display: grid;
   gap: 0.9rem;
-}
-
-.social-box {
-  margin-top: 1rem;
-  padding: 1rem 1.2rem;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: linear-gradient(140deg, #fffaf8, var(--card));
-  box-shadow: var(--shadow);
-}
-
-.social-title {
-  margin: 0;
-  color: var(--ink-muted);
-}
-
-.social-links {
-  margin-top: 0.75rem;
-  display: flex;
-  gap: 0.7rem;
-  flex-wrap: wrap;
-}
-
-.social-link {
-  text-decoration: none;
-  color: var(--accent-2);
-  border: 1px solid rgba(47, 83, 69, 0.28);
-  background: #ffffffd8;
-  border-radius: 999px;
-  padding: 0.5rem 0.95rem;
-  font-weight: 700;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.social-link:hover {
-  background: var(--accent-2-soft);
 }
 
 label {
@@ -414,6 +397,14 @@ textarea:focus {
   gap: 0.8rem;
 }
 
+.form-note {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+/* ---- Buttons ---- */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -445,11 +436,7 @@ textarea:focus {
   background: var(--accent-2-soft);
 }
 
-.form-note {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--ink-muted);
-}
+/* ---- Footer ---- */
 
 .site-footer {
   width: min(1100px, 92vw);
@@ -466,65 +453,34 @@ textarea:focus {
 }
 
 .footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 52px;
   height: 52px;
-  border-radius: 25%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(37, 24, 16, 0.07);
+  border: 1.5px solid var(--border);
   overflow: hidden;
-  display: inline-flex;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.footer-logo:hover {
+  box-shadow: 0 4px 16px rgba(37, 24, 16, 0.13);
+  transform: translateY(-2px) scale(1.08);
 }
 
 .footer-logo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 25%;
+  object-position: center;
   display: block;
+  border-radius: 50%;
 }
 
-
-.shop {
-  margin-top: 3.6rem;
-  background: linear-gradient(140deg, #fffaf8, var(--card));
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-  padding: 2.2rem 1.5rem 2.5rem 1.5rem;
-  text-align: left;
-}
-
-.shop .section-head {
-  margin-bottom: 1.5rem;
-}
-
-.shop-links {
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  margin-top: 1.2rem;
-}
-
-.shop-links .btn {
-  min-width: 140px;
-  font-size: 1.08rem;
-  box-shadow: var(--shadow);
-}
-
-@media (max-width: 680px) {
-  .shop {
-    padding: 1.1rem 0.5rem 1.5rem 0.5rem;
-    border-radius: 18px;
-  }
-  .shop-links {
-    flex-direction: row;
-    gap: 0.7rem;
-    align-items: center;
-  }
-  .shop-links .btn {
-    width: auto;
-    min-width: 120px;
-  }
-}
+/* ---- Animations ---- */
 
 .reveal {
   opacity: 0;
@@ -543,20 +499,16 @@ textarea:focus {
   }
 }
 
+/* ---- Responsive ---- */
+
 @media (max-width: 980px) {
   .hero,
   .schedule-layout {
     grid-template-columns: 1fr;
   }
 
-  .service-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .gallery-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+  .service-grid,
+  .gallery-grid,
   .testimonial-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -580,10 +532,6 @@ textarea:focus {
     justify-self: start;
   }
 
-  .logo {
-    width: auto;
-  }
-
   .site-nav a {
     padding: 0.4rem 0.65rem;
   }
@@ -603,8 +551,7 @@ textarea:focus {
   .hero-card,
   .schedule-card,
   .schedule-help,
-  .booking-form,
-  .social-box {
+  .booking-form {
     padding: 1.05rem;
     border-radius: 18px;
   }
@@ -617,14 +564,12 @@ textarea:focus {
     margin-top: 2.6rem;
   }
 
-  .hero-cta,
-  .social-links {
+  .hero-cta {
     gap: 0.6rem;
   }
 
   .hero-cta .btn,
   .booking-form .btn,
-  .social-link,
   .schedule-card .btn {
     width: 100%;
   }
@@ -652,6 +597,19 @@ textarea:focus {
 
   #map-embed {
     min-height: 340px;
+  }
+
+  .shop {
+    padding: 1.1rem 0.5rem 1.5rem;
+    border-radius: 18px;
+  }
+
+  .shop-links {
+    gap: 0.7rem;
+  }
+
+  .shop-links .btn {
+    min-width: 120px;
   }
 
   .site-footer {

@@ -9,8 +9,6 @@ const CONFIG = {
   mapsEmbedUrl:
     "https://www.google.com/maps?q=-6.9833488,107.6332721&z=17&output=embed",
   mapsDirectUrl: "https://maps.app.goo.gl/68CXX7Da4C96Rgkw7",
-  instagramUrl: "https://instagram.com/oci.nailsss",
-  tiktokUrl: "https://www.tiktok.com/@oci.nails",
 };
 
 const SERVICES = [
@@ -76,143 +74,224 @@ const SERVICES = [
   },
 ];
 
-function normalizeWhatsAppNumber(rawNumber) {
-  const digitsOnly = String(rawNumber || "").replace(/\D/g, "");
-
-  if (!digitsOnly) return "";
-  if (digitsOnly.startsWith("62")) return digitsOnly;
-  if (digitsOnly.startsWith("0")) return `62${digitsOnly.slice(1)}`;
-  if (digitsOnly.startsWith("8")) return `62${digitsOnly}`;
-
-  return digitsOnly;
-}
+// --- Helpers ---
 
 function formatRupiah(price) {
   if (Array.isArray(price)) {
-    return (
-      "Rp" +
-      Number(price[0]).toLocaleString("id-ID") +
-      "–" +
-      Number(price[1]).toLocaleString("id-ID")
-    );
+    return `Rp${price[0].toLocaleString("id-ID")}–${price[1].toLocaleString("id-ID")}`;
   }
-  return "Rp" + Number(price).toLocaleString("id-ID");
+  return `Rp${price.toLocaleString("id-ID")}`;
 }
+
+function toWANumber(raw) {
+  const digits = String(raw || "").replace(/\D/g, "");
+  if (!digits) return "";
+  if (digits.startsWith("62")) return digits;
+  if (digits.startsWith("0")) return "62" + digits.slice(1);
+  if (digits.startsWith("8")) return "62" + digits;
+  return digits;
+}
+
+function generateTimeSlots() {
+  const slots = [];
+  for (let h = 9; h <= 18; h++) {
+    slots.push(String(h).padStart(2, "0") + ":00");
+  }
+  return slots;
+}
+
+function normalizeTimeValue(value) {
+  if (!value) return "";
+  const [hours = "00", minutes = "00"] = String(value).split(":");
+  return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+}
+
+function getServiceLabel(service) {
+  return `${service.name} : ${formatRupiah(service.price)} (${service.displayDuration} menit)`;
+}
+
+function findServiceByValue(value) {
+  if (!value) return null;
+
+  return (
+    SERVICES.find((service) => service.id === value) ||
+    SERVICES.find((service) => value === getServiceLabel(service)) ||
+    [...SERVICES]
+      .sort((a, b) => b.name.length - a.name.length)
+      .find((service) => String(value).includes(service.name)) ||
+    null
+  );
+}
+
+// --- Render ---
 
 function renderServices() {
   const grid = document.getElementById("service-grid");
   const select = document.getElementById("service-select");
 
   grid.innerHTML = SERVICES.map(
-    (service) => `
-      <article class="service-card">
-        <div class="service-visual" aria-hidden="true">
-          <img src="${service.image}" alt="${service.name}" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" />
+    (s) => `
+    <article class="service-card">
+      <div class="service-visual" aria-hidden="true">
+        <img src="${s.image}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" />
+      </div>
+      <div class="service-content">
+        <div class="service-top">
+          <h3>${s.name}</h3>
+          <span class="badge">${formatRupiah(s.price)}</span>
         </div>
-        <div class="service-content">
-          <div class="service-top">
-            <h3>${service.name}</h3>
-            <span class="badge">${formatRupiah(service.price)}</span>
-          </div>
-          <p>${service.description}</p>
-          <small>${service.displayDuration} menit</small>
-        </div>
-      </article>
-    `,
+        <p>${s.description}</p>
+        <small>${s.displayDuration} menit</small>
+      </div>
+    </article>
+  `,
   ).join("");
 
   select.innerHTML =
     '<option value="" selected disabled>Pilih layanan</option>' +
     SERVICES.map(
-      (service) =>
-        `<option value="${service.name} (${formatRupiah(service.price)})">${service.name} : ${formatRupiah(service.price)} (${service.displayDuration} menit)</option>`,
+      (s) =>
+        `<option value="${s.id}">${getServiceLabel(s)}</option>`,
     ).join("");
 }
 
-function generateTimeSlots() {
-  const slots = [];
-
-  for (let hour = 9; hour <= 18; hour++) {
-    const time = `${String(hour).padStart(2, "0")}:00`;
-    slots.push(time);
-  }
-
-  return slots;
-}
-
-function renderTimeOptions(slots) {
+function renderTimeOptions(slots, unavailable = []) {
   const select = document.getElementById("time-select");
-
   select.innerHTML =
     '<option value="">Pilih jam</option>' +
-    slots.map((t) => `<option value="${t}">${t}</option>`).join("");
+    slots
+      .map((t) => {
+        const disabled = unavailable.includes(t);
+        return `<option value="${t}" ${disabled ? "disabled" : ""}>${t}${disabled ? " (Full)" : ""}</option>`;
+      })
+      .join("");
 }
 
 function setupMap() {
-  const embed = document.getElementById("map-embed");
-  const direct = document.getElementById("map-direct-link");
-  const headerLink = document.getElementById("open-map-link");
-
-  embed.src = CONFIG.mapsEmbedUrl;
-  direct.href = CONFIG.mapsDirectUrl;
-  headerLink.href = "#location";
+  document.getElementById("map-embed").src = CONFIG.mapsEmbedUrl;
+  document.getElementById("map-direct-link").href = CONFIG.mapsDirectUrl;
 }
 
-function setupSocialLinks() {
-  const instagramLink = document.getElementById("instagram-link");
-  const tiktokLink = document.getElementById("tiktok-link");
+// --- Booking logic ---
 
-  if (instagramLink) {
-    instagramLink.href = CONFIG.instagramUrl;
+async function getUnavailableSlots(date) {
+  const { data: bookings, error } = await supabaseClient
+    .from("bookings")
+    .select("date, time, service")
+    .eq("date", date);
+
+  if (error) {
+    console.error("Gagal mengambil slot booking:", error);
+    return [];
   }
 
-  if (tiktokLink) {
-    tiktokLink.href = CONFIG.tiktokUrl;
-  }
+  if (!bookings?.length) return [];
+
+  const blocked = [];
+
+  bookings.forEach((b) => {
+    const service = findServiceByValue(b.service);
+    if (!service) return;
+
+    const start = new Date(`${b.date}T${normalizeTimeValue(b.time)}`);
+    if (Number.isNaN(start.getTime())) return;
+    const end = new Date(start.getTime() + service.actualDuration * 60000);
+
+    for (let t = new Date(start); t < end; t.setHours(t.getHours() + 1)) {
+      const slot = String(t.getHours()).padStart(2, "0") + ":00";
+      if (!blocked.includes(slot)) blocked.push(slot);
+    }
+  });
+
+  return blocked;
+}
+
+function hasConflict(bookings, start, end) {
+  return bookings.some((b) => {
+    const service = findServiceByValue(b.service);
+    if (!service) return false;
+    const bStart = new Date(`${b.date}T${normalizeTimeValue(b.time)}`);
+    if (Number.isNaN(bStart.getTime())) return false;
+    const bEnd = new Date(bStart.getTime() + service.actualDuration * 60000);
+    return start < bEnd && end > bStart;
+  });
 }
 
 function setupBookingForm() {
   const form = document.getElementById("booking-form");
   const note = document.getElementById("form-note");
-  const targetNumber = normalizeWhatsAppNumber(CONFIG.whatsappNumber);
+  const dateInput = form.querySelector('input[name="date"]');
+  const slots = generateTimeSlots();
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  dateInput.addEventListener("change", async () => {
+    if (!dateInput.value) {
+      renderTimeOptions(slots);
+      return;
+    }
 
-    const data = new FormData(form);
-    const name = data.get("name");
-    const customerPhone = data.get("customerPhone") || "Tidak diisi";
-    const service = data.get("service");
-    const date = data.get("date");
-    const time = data.get("time");
-    const notes = data.get("notes") || "Tidak ada";
+    renderTimeOptions(slots);
 
-    const selectedService = SERVICES.find((s) => service.includes(s.name));
+    try {
+      const unavailable = await getUnavailableSlots(dateInput.value);
+      renderTimeOptions(slots, unavailable);
+    } catch (error) {
+      console.error("Gagal memuat opsi jam:", error);
+      renderTimeOptions(slots);
+    }
+  });
 
-    const duration = selectedService.actualDuration;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    const start = new Date(`${date}T${time}`);
-    const end = new Date(start.getTime() + duration * 60000);
+    const fd = new FormData(form);
+    const name = fd.get("name");
+    const customerPhone = fd.get("customerPhone") || "Tidak diisi";
+    const serviceValue = fd.get("service");
+    const date = fd.get("date");
+    const time = fd.get("time");
+    const notes = fd.get("notes") || "Tidak ada";
 
-    const { data: bookings } = await supabaseClient
+    const selectedService = findServiceByValue(serviceValue);
+    const service = selectedService ? getServiceLabel(selectedService) : serviceValue;
+
+    if (!selectedService) {
+      alert("Treatment tidak dikenali. Silakan pilih ulang treatment.");
+      return;
+    }
+
+    const start = new Date(`${date}T${normalizeTimeValue(time)}`);
+    const end = new Date(
+      start.getTime() + selectedService.actualDuration * 60000,
+    );
+
+    const { data: bookings, error: bookingsError } = await supabaseClient
       .from("bookings")
-      .select("*")
+      .select("date, time, service")
       .eq("date", date);
 
-    const isConflict = (bookings || []).some((b) => {
-      const bStart = new Date(`${b.date}T${b.time}`);
+    if (bookingsError) {
+      alert("Jadwal belum bisa dicek sekarang. Coba beberapa saat lagi.");
+      return;
+    }
 
-      const bService = SERVICES.find((s) => b.service.includes(s.name));
-
-      if (!bService) return false;
-
-      const bEnd = new Date(bStart.getTime() + bService.actualDuration * 60000);
-
-      return start < bEnd && end > bStart;
-    });
-
-    if (isConflict) {
+    if (hasConflict(bookings || [], start, end)) {
       alert("Slot bentrok, pilih waktu lain");
+      return;
+    }
+
+    const { error } = await supabaseClient.from("bookings").insert([
+      {
+        name,
+        phone: customerPhone,
+        service,
+        date,
+        time,
+        notes,
+      },
+    ]);
+
+    if (error) {
+      alert("Gagal simpan booking");
       return;
     }
 
@@ -229,33 +308,15 @@ function setupBookingForm() {
       "Mohon konfirmasi ketersediaannya. Terima kasih!",
     ].join("\n");
 
-    const payload = {
-      name,
-      phone: customerPhone,
-      service,
-      date,
-      time,
-      notes,
-    };
-
-    const { error } = await supabaseClient.from("bookings").insert([payload]);
-
-    if (error) {
-      alert("Gagal simpan booking");
-      return;
-    }
-
-    const link = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
-
+    const waLink = `https://wa.me/${toWANumber(CONFIG.whatsappNumber)}?text=${encodeURIComponent(message)}`;
     note.textContent = "Membuka WhatsApp dengan detail booking kamu...";
-    window.open(link, "_blank", "noopener");
+    window.open(waLink, "_blank", "noopener");
   });
 }
 
+// --- Init ---
+
 renderServices();
 setupMap();
-setupSocialLinks();
 setupBookingForm();
-
-const slots = generateTimeSlots();
-renderTimeOptions(slots);
+renderTimeOptions(generateTimeSlots());
