@@ -172,6 +172,210 @@ function setupMap() {
   document.getElementById("map-direct-link").href = CONFIG.mapsDirectUrl;
 }
 
+function setupHeroSlider() {
+  const sliderFrame = document.querySelector(".hero-image-frame");
+  const sliderTrack = document.getElementById("hero-slider-track");
+  const prevButton = document.getElementById("hero-slider-prev");
+  const nextButton = document.getElementById("hero-slider-next");
+  const dotsContainer = document.getElementById("hero-slider-dots");
+
+  if (!sliderFrame || !sliderTrack || !prevButton || !nextButton || !dotsContainer) return;
+
+  const gallerySlides = [...document.querySelectorAll("#gallery .gallery-item img")]
+    .map((img) => ({
+      src: img.getAttribute("src"),
+      alt: img.getAttribute("alt") || "Galeri Oci.Nails",
+    }))
+    .filter((slide) => slide.src);
+
+  if (!gallerySlides.length) return;
+
+  const slides = gallerySlides.filter(
+    (slide, index, self) =>
+      self.findIndex((item) => item.src === slide.src) === index,
+  );
+
+  if (slides.length < 2) return;
+
+  const loopSlides = [slides[slides.length - 1], ...slides, slides[0]];
+
+  sliderTrack.innerHTML = loopSlides
+    .map(
+      (slide) =>
+        `<div class="hero-slide"><img src="${slide.src}" alt="${slide.alt}" loading="eager" /></div>`,
+    )
+    .join("");
+
+  let currentIndex = 0;
+  let currentPosition = 1;
+  let autoplayId = null;
+  let isAnimating = false;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchDeltaX = 0;
+  let isSwiping = false;
+  let isTouchActive = false;
+
+  function updateDots() {
+    [...dotsContainer.children].forEach((dot, dotIndex) => {
+      dot.classList.toggle("is-active", dotIndex === currentIndex);
+      dot.setAttribute(
+        "aria-label",
+        `Ke slide ${dotIndex + 1}${dotIndex === currentIndex ? " (aktif)" : ""}`,
+      );
+      dot.setAttribute("aria-current", dotIndex === currentIndex ? "true" : "false");
+    });
+  }
+
+  function setTrackPosition(position, { animate = true } = {}) {
+    sliderTrack.style.transition = animate ? "transform 550ms ease" : "none";
+    sliderTrack.style.transform = `translateX(-${position * 100}%)`;
+  }
+
+  function setTrackPositionWithOffset(position, offsetPx) {
+    sliderTrack.style.transition = "none";
+    sliderTrack.style.transform = `translateX(calc(-${position * 100}% + ${offsetPx}px))`;
+  }
+
+  function goToStep(step) {
+    if (isAnimating) return;
+    currentPosition += step;
+    currentIndex = (currentIndex + step + slides.length) % slides.length;
+    isAnimating = true;
+    setTrackPosition(currentPosition, { animate: true });
+    updateDots();
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayId = window.setInterval(() => {
+      goToStep(1);
+    }, 3000);
+  }
+
+  function stopAutoplay() {
+    if (autoplayId) {
+      window.clearInterval(autoplayId);
+      autoplayId = null;
+    }
+  }
+
+  function handleManualStep(step) {
+    goToStep(step);
+    startAutoplay();
+  }
+
+  dotsContainer.innerHTML = slides
+    .map(
+      (_, index) =>
+        `<button type="button" class="hero-slider-dot" data-slide-index="${index}" aria-label="Ke slide ${index + 1}"></button>`,
+    )
+    .join("");
+
+  prevButton.addEventListener("click", () => {
+    handleManualStep(-1);
+  });
+
+  nextButton.addEventListener("click", () => {
+    handleManualStep(1);
+  });
+
+  dotsContainer.addEventListener("click", (event) => {
+    const dot = event.target.closest(".hero-slider-dot");
+    if (!dot) return;
+
+    const targetIndex = Number(dot.dataset.slideIndex);
+    if (Number.isNaN(targetIndex)) return;
+    if (targetIndex === currentIndex) return;
+
+    const delta = targetIndex - currentIndex;
+    goToStep(delta);
+    startAutoplay();
+  });
+
+  sliderTrack.addEventListener("transitionend", () => {
+    if (currentPosition === 0) {
+      currentPosition = slides.length;
+      setTrackPosition(currentPosition, { animate: false });
+    } else if (currentPosition === slides.length + 1) {
+      currentPosition = 1;
+      setTrackPosition(currentPosition, { animate: false });
+    }
+
+    isAnimating = false;
+  });
+
+  sliderFrame.addEventListener(
+    "touchstart",
+    (event) => {
+      if (isAnimating || !event.touches?.length) return;
+
+      const touch = event.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchDeltaX = 0;
+      isSwiping = false;
+      isTouchActive = true;
+      stopAutoplay();
+      sliderTrack.classList.add("is-dragging");
+    },
+    { passive: true },
+  );
+
+  sliderFrame.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!isTouchActive || !event.touches?.length) return;
+
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      if (!isSwiping) {
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+          return;
+        }
+        isSwiping = true;
+      }
+
+      touchDeltaX = deltaX;
+      setTrackPositionWithOffset(currentPosition, deltaX);
+      event.preventDefault();
+    },
+    { passive: false },
+  );
+
+  function finalizeTouchSwipe() {
+    if (!isTouchActive) return;
+
+    const frameWidth = sliderFrame.clientWidth || 1;
+    const swipeThreshold = Math.max(36, frameWidth * 0.14);
+
+    sliderTrack.classList.remove("is-dragging");
+
+    if (isSwiping && Math.abs(touchDeltaX) > swipeThreshold) {
+      goToStep(touchDeltaX < 0 ? 1 : -1);
+    } else {
+      setTrackPosition(currentPosition, { animate: true });
+    }
+
+    isTouchActive = false;
+    isSwiping = false;
+    touchDeltaX = 0;
+    startAutoplay();
+  }
+
+  sliderFrame.addEventListener("touchend", finalizeTouchSwipe, { passive: true });
+  sliderFrame.addEventListener("touchcancel", finalizeTouchSwipe, { passive: true });
+
+  sliderFrame.addEventListener("mouseenter", stopAutoplay);
+  sliderFrame.addEventListener("mouseleave", startAutoplay);
+
+  setTrackPosition(currentPosition, { animate: false });
+  updateDots();
+  startAutoplay();
+}
+
 // --- Booking logic ---
 
 async function getUnavailableSlots(date) {
@@ -318,5 +522,6 @@ function setupBookingForm() {
 
 renderServices();
 setupMap();
+setupHeroSlider();
 setupBookingForm();
 renderTimeOptions(generateTimeSlots());

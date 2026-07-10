@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Oci.Nails Dashboard</title>
+    <meta
+      name="description"
+      content="Dashboard admin Oci.Nails untuk input booking manual, lihat jadwal harian, reschedule, dan cancel booking."
+    />
+    <meta name="theme-color" content="#12302a" />
+    <link rel="manifest" href="admin.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="bg-noise" aria-hidden="true"></div>
+    <div id="login-overlay" hidden>
+      <section class="panel login-card">
+        <h2>Login Admin Oci.Nails</h2>
+        <form id="login-form" class="fast-form" autocomplete="off">
+          <label>
+            Email
+            <input type="email" id="login-email" required />
+          </label>
+          <label>
+            Password
+            <input type="password" id="login-password" required />
+          </label>
+          <button class="btn btn-primary" type="submit">Login</button>
+          <p id="login-feedback" class="feedback"></p>
+        </form>
+      </section>
+    </div>
+    <main class="admin-shell" hidden>
+      <header class="topbar">
+        <div>
+          <p class="kicker">Admin Panel</p>
+          <h1>Dashboard Booking Oci.Nails</h1>
+          <p class="sub">
+            Mode super cepat: input booking kurang dari 10 detik.
+          </p>
+        </div>
+        <div class="topbar-actions">
+          <button id="logout-btn" class="btn btn-danger" type="button" hidden>
+            Logout
+          </button>
+          <button id="install-pwa" class="btn btn-ghost" hidden>
+            Install App
+          </button>
+          <a
+            class="btn btn-ghost"
+            href="index.html"
+            target="_blank"
+            rel="noopener"
+            >Buka Website Customer</a
+          >
+        </div>
+      </header>
+
+      <section class="panel stats" aria-label="Statistik harian">
+        <article>
+          <p>Total Booking Hari Ini</p>
+          <strong id="stat-total">0</strong>
+        </article>
+        <article>
+          <p>Jam Tersibuk</p>
+          <strong id="stat-busy">-</strong>
+        </article>
+        <article>
+          <p>Terakhir Update</p>
+          <strong id="stat-update">-</strong>
+        </article>
+      </section>
+
+      <section class="grid-2">
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Tambah Booking Manual</h2>
+            <p>Input dari WhatsApp, telepon, atau walk-in.</p>
+          </div>
+          <form id="manual-form" class="fast-form" autocomplete="off">
+            <label>
+              Nama customer
+              <input
+                name="name"
+                type="text"
+                required
+                placeholder="Contoh: Sinta"
+              />
+            </label>
+            <div class="split">
+              <label>
+                No HP
+                <input name="phone" type="tel" placeholder="08xxxxxxxxxx" />
+              </label>
+              <label>
+                Sumber
+                <select name="source" id="source-select">
+                  <option value="WhatsApp" selected>WhatsApp</option>
+                  <option value="Offline">Offline / Walk-in</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Telepon">Telepon</option>
+                </select>
+              </label>
+            </div>
+            <div class="split">
+              <label>
+                Tanggal
+                <input name="date" id="manual-date" type="date" required />
+              </label>
+              <label>
+                Jam
+                <select name="time" id="manual-time" required></select>
+              </label>
+            </div>
+            <label>
+              Treatment
+              <select name="service" id="manual-service" required></select>
+            </label>
+            <label>
+              Catatan singkat
+              <input
+                name="notes"
+                type="text"
+                placeholder="Default: Booking manual (WhatsApp/Offline)"
+              />
+            </label>
+            <div class="quick-row" role="group" aria-label="Quick date">
+              <button type="button" class="btn-chip" data-quick-date="today">
+                Hari ini
+              </button>
+              <button type="button" class="btn-chip" data-quick-date="tomorrow">
+                Besok
+              </button>
+              <button type="button" class="btn-chip" data-quick-time="next">
+                Jam berikutnya
+              </button>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              + Simpan Booking
+            </button>
+            <p id="manual-feedback" class="feedback"></p>
+          </form>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Lihat Semua Booking</h2>
+            <p>List otomatis berdasarkan tanggal pilihan.</p>
+          </div>
+          <div class="day-filter">
+            <label>
+              Pilih tanggal
+              <input type="date" id="day-filter" />
+            </label>
+            <button id="refresh-day" class="btn btn-ghost" type="button">
+              Refresh
+            </button>
+          </div>
+          <div id="booking-list" class="booking-list" aria-live="polite"></div>
+        </article>
+      </section>
+    </main>
+
+    <template id="booking-item-template">
+      <article class="booking-item">
+        <header>
+          <div>
+            <h3 class="booking-name"></h3>
+            <p class="booking-meta"></p>
+          </div>
+          <p class="booking-time"></p>
+        </header>
+        <p class="booking-service"></p>
+        <p class="booking-notes"></p>
+        <form class="reschedule-form" hidden>
+          <div class="split">
+            <label>
+              Tanggal baru
+              <input type="date" name="newDate" required />
+            </label>
+            <label>
+              Jam baru
+              <select name="newTime" required></select>
+            </label>
+          </div>
+          <div class="reschedule-actions">
+            <button class="btn btn-primary" type="submit">
+              Simpan Reschedule
+            </button>
+            <button class="btn btn-ghost cancel-reschedule" type="button">
+              Batal
+            </button>
+          </div>
+        </form>
+        <div class="item-actions">
+          <button class="btn btn-ghost action-reschedule" type="button">
+            Reschedule
+          </button>
+          <button class="btn btn-danger action-cancel" type="button">
+            Cancel Booking
+          </button>
+        </div>
+      </article>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

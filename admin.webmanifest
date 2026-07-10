@@ -1,0 +1,22 @@
+{
+  "name": "Admin Oci.Nails",
+  "short_name": "Admin Oci",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3eee6",
+  "theme_color": "#12302a",
+  "description": "Dashboard admin booking Oci.Nails untuk input manual, reschedule, dan cancel.",
+  "icons": [
+    {
+      "src": "img/logo-oci-nails-transparant.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo-oci-nails-transparant.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
